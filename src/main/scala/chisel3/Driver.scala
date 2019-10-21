@@ -105,6 +105,7 @@ object Driver extends BackendCompilationUtilities {
     *
     * @param gen A function that creates a Module hierarchy.
     */
+  @deprecated("Use chisel3.stage.ChiselStage with '--no-run-firrtl'", "3.2.1")
   def emit[T <: RawModule](gen: () => T): String = Driver.emit(elaborate(gen))
 
   /**
@@ -120,6 +121,7 @@ object Driver extends BackendCompilationUtilities {
     * @param gen A function that creates a Module hierarchy.
     * @return A String containing the design in Verilog.
     */
+  @deprecated("Use chisel3.stage.ChiselStage with '-X verilog -E verilog' arguments", "3.2.1")
   def emitVerilog[T <: RawModule](gen: => T): String = {
     execute(Array[String](), { () => gen }) match {
       case ChiselExecutionSuccess(_, _, Some(firrtl.FirrtlExecutionSuccess(_, verilog))) => verilog
@@ -179,6 +181,7 @@ object Driver extends BackendCompilationUtilities {
   }
 
   private var target_dir: Option[String] = None
+  @deprecated("Use chisel3.stage.ChiselStage with a '--target-directory' argument", "3.2.1")
   def parseArgs(args: Array[String]): Unit = {
     for (i <- 0 until args.size) {
       if (args(i) == "--targetDir") {
@@ -187,6 +190,7 @@ object Driver extends BackendCompilationUtilities {
     }
   }
 
+  @deprecated("This method has no effect on Chisel3 Driver!", "3.2.1")
   def targetDir(): String = { target_dir getOrElse new File(".").getCanonicalPath }
 
   /**
@@ -196,6 +200,7 @@ object Driver extends BackendCompilationUtilities {
     * @param dut                    The device under test
     * @return                       An execution result with useful stuff, or failure with message
     */
+  @deprecated("Use chisel3.stage.ChiselStage.{execute, transform}", "3.2.1")
   def execute( // scalastyle:ignore method.length
       optionsManager: ExecutionOptionsManager with HasChiselExecutionOptions with HasFirrtlOptions,
       dut: () => RawModule): ChiselExecutionResult = {
@@ -241,6 +246,7 @@ object Driver extends BackendCompilationUtilities {
     * @param dut    The device under test
     * @return       An execution result with useful stuff, or failure with message
     */
+  @deprecated("Use chisel3.stage.ChiselStage.{execute, transform}", "3.2.1")
   def execute(args: Array[String], dut: () => RawModule): ChiselExecutionResult = {
     val optionsManager = new ExecutionOptionsManager("chisel3") with HasChiselExecutionOptions with HasFirrtlOptions
 
@@ -259,6 +265,7 @@ object Driver extends BackendCompilationUtilities {
     *
     * @param args unused args
     */
+  @deprecated("Use chisel3.stage.ChiselMain", "3.2.1")
   def main(args: Array[String]) {
     execute(Array("--help"), null)
   }
